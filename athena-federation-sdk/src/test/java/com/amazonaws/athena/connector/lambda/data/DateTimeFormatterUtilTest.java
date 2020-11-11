@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.util.TimeZone;
 
 import static org.junit.Assert.*;
@@ -143,6 +144,17 @@ public class DateTimeFormatterUtilTest {
         ZonedDateTime expectedZdt = ZonedDateTime.of(localDateTimeExpected, zoneIdExpected);
         assertEquals(expectedLong, DateTimeFormatterUtil.packDateTimeWithZone(expectedZdt));
         assertEquals(expectedZdt, DateTimeFormatterUtil.constructZonedDateTime(expectedLong));
+    }
 
+    @Test
+    public void dateTimePacking_roundTrip() {
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(10), ZoneOffset.UTC);
+        assertEquals(zonedDateTime, DateTimeFormatterUtil.constructZonedDateTime(DateTimeFormatterUtil.packDateTimeWithZone(zonedDateTime)));
+    }
+
+    @Test
+    public void dateTimePacking_roundTrip2() {
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.of(2015, 12, 21, 17, 42, 34, 0), ZoneOffset.UTC);
+        assertEquals(zonedDateTime, DateTimeFormatterUtil.constructZonedDateTime(DateTimeFormatterUtil.packDateTimeWithZone(zonedDateTime)));
     }
 }
